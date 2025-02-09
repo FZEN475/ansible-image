@@ -1,5 +1,6 @@
 # ansible-image
-## Description
+## Описание
+* Образ основан на alpine
 * Образ содержит ansible и утилиты.
 * Для загрузки playbook.yaml требуется указать environment.ANSIBLE_REPO.
 * Образ зависим от файлов structure.yaml и inventory.json, которые копируются из "безопасного" расположения.
@@ -18,3 +19,32 @@
 | environment.SECURE_PATH     | path       | Расположение на "безопасном" сервере                               |
 | environment.LIBRARY         | git url    | Репозиторий с библиотеками ansible                                 |
 | environment.GIT_EXTRA_PARAM | -bdev      | Дополнительные параметры git clone                                 |
+
+## Дополнительно
+
+## Заметки
+
+<!DOCTYPE html>
+<table>
+  <thead>
+    <tr>
+      <th>Проблема</th>
+      <th>Решение</th>
+    </tr>
+  </thead>
+  <tr>
+      <td>Из контейнера не определяется DNS имя без домена.</td>
+      <td>
+На хосте докера:  
+/etc/docker/daemon.json
+
+```json
+{
+  "dns": ["192.168.2.1","8.8.8.8"]
+}
+```
+</td>
+  </tr>
+  <tr>
+  </tr>
+</table>
