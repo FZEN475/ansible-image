@@ -20,9 +20,7 @@
 | environment.LIBRARY         | git url    | Репозиторий с библиотеками ansible                                 |
 | environment.GIT_EXTRA_PARAM | -bdev      | Дополнительные параметры git clone                                 |
 
-## Дополнительно
-
-## Заметки
+## Troubleshoots
 
 <!DOCTYPE html>
 <table>
