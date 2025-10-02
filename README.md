@@ -2,23 +2,16 @@
 ## Описание
 * Образ основан на alpine
 * Образ содержит ansible и утилиты.
-* Для загрузки playbook.yaml требуется указать environment.ANSIBLE_REPO.
-* Образ зависим от файлов structure.yaml и inventory.json, которые копируются из "безопасного" расположения.
-  * Файлы создаются при выполнении [terraform](https://github.com/FZEN475/terraform).
-  * Путь для скачивания указывается через environment.SECURE_SERVER и environment.SECURE_PATH. 
-* Общие [библиотеки](https://github.com/FZEN475/ansible-library.git) 
-  * Загружаются в /source/library при каждом создании контейнера.
-  * Репозиторий библиотек environment.LIBRARY.
+* Для загрузки playbook.yaml требуется указать Переменные среды.
 
 ## Variables
-| Дополнительно               | Значение   | Comment                                                            |
-|:----------------------------|:-----------|:-------------------------------------------------------------------|
-| secrets.id_ed25519          | id_ed25519 | Закрытый ключ "безопасного" сервера                                |
-| environment.ANSIBLE_REPO    | git url    | Репозиторий с playbook.yaml                                        |
-| environment.SECURE_SERVER   | IP/DNS     | IP или DNS "безопасного" сервера с inventory.json и structure.yaml |
-| environment.SECURE_PATH     | path       | Расположение на "безопасном" сервере                               |
-| environment.LIBRARY         | git url    | Репозиторий с библиотеками ansible                                 |
-| environment.GIT_EXTRA_PARAM | -bdev      | Дополнительные параметры git clone                                 |
+| Дополнительно                      | Значение                         | Comment                               |
+|:-----------------------------------|:---------------------------------|:--------------------------------------|
+| secrets.id_ed25519                 | /root/.ssh/id_ed25519            | Ключ для подключения к серверам.      |
+| environment.ANSIBLE_COLLECTION_URL | git URL                          | Путь к ansible-galaxy collection      |
+| environment.INVENTORY_URL          | URL (опционально)                | Ссылка на инвентарь                   |
+| environment.STRUCTURE_URL          | URL (опционально)                | Ссылка на структуру                   |
+| environment.COLLECTION_PLAYBOOK    | [ns].[name].playbooks.[filename] | Путь к файлу playbook.yml в коллекции |
 
 ## Troubleshoots
 
