@@ -12,6 +12,7 @@
 | environment.INVENTORY_URL          | URL (опционально)                | Ссылка на инвентарь                   |
 | environment.STRUCTURE_URL          | URL (опционально)                | Ссылка на структуру                   |
 | environment.COLLECTION_PLAYBOOK    | [ns].[name].playbooks.[filename] | Путь к файлу playbook.yml в коллекции |
+| environment.ANSIBLE_EXTRA_FLAGS    | -vvv                             | Дополнительные флаги для отладки      |
 
 ## Troubleshoots
 

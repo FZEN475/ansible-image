@@ -49,5 +49,5 @@ EOF
 cat ./playbook.yaml
 
 # --- Запуск плейбука ---
-ansible-playbook ./playbook.yaml $INVENTORY_PARAMS
+ansible-playbook ./playbook.yaml $INVENTORY_PARAMS ${ANSIBLE_EXTRA_FLAGS:-}
 
