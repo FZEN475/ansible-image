@@ -1,6 +1,6 @@
 FROM alpine:latest as ansible
 
-RUN apk add py3-pip python3 openssh-client git && \
+RUN apk add py3-pip python3 openssh-client git curl && \
     apk --update --no-cache add --virtual python3-dev && \
     pip3 install --no-cache-dir --upgrade --break-system-packages pip && \
     pip3 install --no-cache-dir --upgrade --break-system-packages  \

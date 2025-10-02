@@ -8,7 +8,7 @@
 | Дополнительно                      | Значение                         | Comment                               |
 |:-----------------------------------|:---------------------------------|:--------------------------------------|
 | secrets.id_ed25519                 | /root/.ssh/id_ed25519            | Ключ для подключения к серверам.      |
-| environment.ANSIBLE_COLLECTION_URL | git URL                          | Путь к ansible-galaxy collection      |
+| environment.ANSIBLE_COLLECTION_URL | git URL                          | Ссылка на ansible-galaxy collection   |
 | environment.INVENTORY_URL          | URL (опционально)                | Ссылка на инвентарь                   |
 | environment.STRUCTURE_URL          | URL (опционально)                | Ссылка на структуру                   |
 | environment.COLLECTION_PLAYBOOK    | [ns].[name].playbooks.[filename] | Путь к файлу playbook.yml в коллекции |
