@@ -15,7 +15,6 @@ done
 
 git clone -b main "$ANSIBLE_COLLECTION_URL" /tmp/repo
 
-
 echo "Устанавливаем Ansible-коллекцию из $ANSIBLE_COLLECTION_URL"
 #ansible-galaxy collection install "$ANSIBLE_COLLECTION_URL"
 ansible-galaxy collection install /tmp/repo/kubernetes_gitlab_collection
@@ -25,12 +24,12 @@ INVENTORY_PATH=""
 STRUCTURE_PATH=""
 
 [ -n "$INVENTORY_URL" ] && {
-    curl -s -o /tmp/inventory.json "$INVENTORY_URL"
+    curl -k -o /tmp/inventory.json "$INVENTORY_URL"
     INVENTORY_PATH="/tmp/inventory.json"
 }
 
 [ -n "$STRUCTURE_URL" ] && {
-    curl -s -o /tmp/structure.yaml "$STRUCTURE_URL"
+    curl -k -o /tmp/structure.yaml "$STRUCTURE_URL"
     STRUCTURE_PATH="/tmp/structure.yaml"
 }
 
@@ -42,7 +41,8 @@ INVENTORY_PARAMS=""
 # --- Генерируем локальный playbook с динамическим импортом ---
 cat > ./playbook.yaml <<EOF
 ---
-- import_playbook: ${COLLECTION_PLAYBOOK}
+- name: Import a playbook
+  ansible.builtin.import_playbook: ${COLLECTION_PLAYBOOK}
 EOF
 
 # --- Запуск плейбука ---
