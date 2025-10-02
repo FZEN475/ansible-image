@@ -1,7 +1,7 @@
 #!/usr/bin/env ash
 
 # --- Проверка обязательных переменных окружения ---
-required_vars=("ANSIBLE_COLLECTION_URL" "COLLECTION_PLAYBOOK")
+required_vars="ANSIBLE_COLLECTION_URL COLLECTION_PLAYBOOK"
 
 for var in "${required_vars[@]}"; do
     if [ -z "$(eval echo \$$var)" ]; then
