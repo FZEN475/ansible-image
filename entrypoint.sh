@@ -1,9 +1,5 @@
 #!/usr/bin/env ash
 
-chmod 600 /root/.ssh/id_ed25519
-
-cat /root/.ssh/id_ed25519
-
 # --- Проверка обязательных переменных окружения ---
 required_vars="ANSIBLE_COLLECTION_URL COLLECTION_PLAYBOOK"
 
