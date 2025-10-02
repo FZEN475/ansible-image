@@ -1,37 +1,44 @@
 #!/usr/bin/env ash
 
-function init_ssh_access() {
-  mkdir -p /root/.ssh/
-  [ -f /root/.ssh/id_ed25519 ] || cp /run/secrets/id_ed25519 /root/.ssh/ && chmod 0600 /root/.ssh/id_ed25519
-  ssh-keyscan "${SECURE_SERVER}" >> /root/.ssh/known_hosts
-  ssh-keyscan github.com >> /root/.ssh/known_hosts
-  echo "
-    Host ${SECURE_SERVER}
-        HostName ${SECURE_SERVER}
-        User root
-        IdentityFile ~/.ssh/id_ed25519
-        IdentitiesOnly yes
-    " > ~/.ssh/config
+# --- Проверка обязательных переменных окружения ---
+required_vars=("ANSIBLE_COLLECTION_URL" "COLLECTION_PLAYBOOK")
+
+for var in "${required_vars[@]}"; do
+    if [ -z "$(eval echo \$$var)" ]; then
+        echo "Ошибка: переменная окружения $var не задана!"
+        exit 1
+    fi
+done
+
+# --- Установка Ansible-коллекции ---
+echo "Устанавливаем Ansible-коллекцию из $ANSIBLE_COLLECTION_URL"
+ansible-galaxy collection install "$ANSIBLE_COLLECTION_URL"
+
+# --- Скачиваем inventory и structure, если URL задан ---
+INVENTORY_PATH=""
+STRUCTURE_PATH=""
+
+[ -n "$INVENTORY_URL" ] && {
+    curl -s -o /tmp/inventory.json "$INVENTORY_URL"
+    INVENTORY_PATH="/tmp/inventory.json"
 }
 
-function init_ansible() {
-  mkdir -p /source
-  if [[ -z "${GIT_EXTRA_PARAM}" ]]; then
-    git clone "${ANSIBLE_REPO}" /source
-  else
-    git clone "${GIT_EXTRA_PARAM}" "${ANSIBLE_REPO}" /source
-  fi
-  [[ -d  /source/playbooks/library ]] || rm -rf /source/playbooks/library && mkdir -p /source/playbooks/library
-  if [[ -z "${GIT_EXTRA_PARAM}" ]]; then
-    git clone "${LIBRARY}" /source/playbooks/library
-  else
-    git clone "${GIT_EXTRA_PARAM}" "${LIBRARY}" /source/playbooks/library
-  fi
-    scp -O "${SECURE_SERVER}:${SECURE_PATH}structure.yaml" /source
-    scp -O "${SECURE_SERVER}:${SECURE_PATH}inventory.json" /source
+[ -n "$STRUCTURE_URL" ] && {
+    curl -s -o /tmp/structure.yaml "$STRUCTURE_URL"
+    STRUCTURE_PATH="/tmp/structure.yaml"
 }
 
-init_ssh_access
-init_ansible
-ansible-lint /source/playbook.yaml
-ansible-playbook /source/playbook.yaml -i /source/inventory.json -i /source/structure.yaml
+# --- Формируем параметры -i только для существующих файлов ---
+INVENTORY_PARAMS=""
+[ -n "$INVENTORY_PATH" ] && INVENTORY_PARAMS="$INVENTORY_PARAMS -i $INVENTORY_PATH"
+[ -n "$STRUCTURE_PATH" ] && INVENTORY_PARAMS="$INVENTORY_PARAMS -i $STRUCTURE_PATH"
+
+# --- Генерируем локальный playbook с динамическим импортом ---
+cat > ./playbook.yaml <<EOF
+---
+- import_playbook: ${COLLECTION_PLAYBOOK}
+EOF
+
+# --- Запуск плейбука ---
+ansible-playbook ./playbook.yaml "$INVENTORY_PARAMS"
+
