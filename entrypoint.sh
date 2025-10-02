@@ -12,12 +12,8 @@ for var in $required_vars; do
 done
 
 # --- Установка Ansible-коллекции ---
-
-git clone -b main "$ANSIBLE_COLLECTION_URL" /tmp/repo
-
 echo "Устанавливаем Ansible-коллекцию из $ANSIBLE_COLLECTION_URL"
 #ansible-galaxy collection install "$ANSIBLE_COLLECTION_URL"
-ansible-galaxy collection install /tmp/repo/kubernetes_gitlab_collection
 
 # --- Скачиваем inventory и structure, если URL задан ---
 INVENTORY_PATH=""
