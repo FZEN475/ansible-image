@@ -1,0 +1,10 @@
+namespace: image_test
+name: ansible
+version: "1.0.0"
+readme: README.md
+authors:
+  - "firzen475@gmail.com"
+description: "Коллекция для теста образа ansible"
+license:
+  - "MIT"
+repository: "https://gitlab.fzen.pro/github/ansible-image.git"

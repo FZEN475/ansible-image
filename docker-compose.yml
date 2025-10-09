@@ -1,0 +1,53 @@
+services:
+  ansible:
+    image: ghcr.io/fzen475/ansible-image:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: ./.env
+    environment:
+      ANSIBLE_COLLECTION_PATH: "test_collection"
+      ANSIBLE_COLLECTION_URL: ""
+      ANSIBLE_COLLECTION_REQUIREMENTS_FILE: ""
+      ANSIBLE_COLLECTION_EXTRA_FLAGS: "--ignore-certs"
+      ANSIBLE_COLLECTION_ACCESS_TOKEN: ${ANSIBLE_COLLECTION_ACCESS_TOKEN}
+      
+      ANSIBLE_PLAYBOOK_OR_COLLECTION: "image_test.ansible.playbook"
+      ANSIBLE_INVENTORY_FILES_OR_URLS: "https://ansible.home.lan/inventory.json,https://ansible.home.lan/structure.yaml"
+      ANSIBLE_PRIVATE_KEY: "/root/.ssh/id_ed25519"
+      ANSIBLE_EXTRA_FLAGS: "-vv"
+    volumes:
+      - /tmp/ansible-image:/source
+    secrets:
+      - source: id_ed25519
+        target: /root/.ssh/id_ed25519
+        mode: 0600
+
+secrets:
+  id_ed25519:
+    file: /root/.ssh/id_ed25519
+
+#    container_name: ansible-kubernetes-gitlab
+#    env_file: ./.env
+#    environment:
+#      ANSIBLE_COLLECTION_URL: "git+https://github.com/FZEN475/kubernetes-gitlab.git,main"
+#      INVENTORY_URL: "https://ansible.home.lan/inventory.json"
+#      STRUCTURE_URL: "https://ansible.home.lan/structure.yaml"
+#      COLLECTION_PLAYBOOK: "gitlab.kubernetes_gitlab.playbook"
+#      ANSIBLE_EXTRA_FLAGS: ""
+#      GALAXY_SERVER: "https://github.com/"
+#      GALAXY_TOKEN_PATH: "/root/.ssh/git_access_token"
+#    secrets:
+#      - source: id_ed25519
+#        target: /root/.ssh/id_ed25519
+#        mode: 0600
+#      - source: git_access_token
+#        target: /root/.ssh/git_access_token
+#        mode: 0600
+#    restart: no
+#
+#secrets:
+#  id_ed25519:
+#    file: /root/.ssh/id_ed25519
+#  git_access_token:
+#    file: /root/.ssh/git_access_token

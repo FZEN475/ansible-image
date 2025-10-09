@@ -1,0 +1,6 @@
+---
+- name: Проверка доступности хоста (ping)
+  ansible.builtin.ping:
+
+- name: Выполнение простой команды на хосте
+  ansible.builtin.command: echo "Ansible работает! {{ variable }}"

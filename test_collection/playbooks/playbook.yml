@@ -1,0 +1,8 @@
+
+
+- hosts: control_main
+  gather_facts: yes
+  vars:
+    variable: "var-2"
+  roles:
+    - image_test.ansible.run_test

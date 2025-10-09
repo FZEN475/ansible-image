@@ -1,4 +1,4 @@
-FROM alpine:latest as ansible
+FROM alpine:latest AS ansible
 
 RUN apk add py3-pip python3 openssh-client git curl && \
     apk --update --no-cache add --virtual python3-dev && \
